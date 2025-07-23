@@ -1,2 +1,2 @@
-export * from "./components/email/email-template"
+export * from "./lib/email-template-generator"
 export * from "./lib/auth-view-paths"

@@ -11,7 +11,7 @@ import {
     twoFactorClient,
     usernameClient
 } from "better-auth/client/plugins"
-import { createAuthClient } from "better-auth/react"
+import { createAuthClient } from "better-auth/client"
 
 type ApiKeyClientPlugin = ReturnType<typeof apiKeyClient>
 type MultiSessionClientPlugin = ReturnType<typeof multiSessionClient>

@@ -9,7 +9,6 @@ import {
     KickIcon,
     LinkedInIcon,
     MicrosoftIcon,
-    type ProviderIcon,
     RedditIcon,
     RobloxIcon,
     SpotifyIcon,
@@ -18,7 +17,9 @@ import {
     VKIcon,
     XIcon,
     ZoomIcon
-} from "../components/provider-icons"
+} from "../components/provider-icons.vue"
+
+export type ProviderIcon = (props: { class?: string }) => any
 
 export const socialProviders = [
     {

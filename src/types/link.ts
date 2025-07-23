@@ -1,7 +1,6 @@
-import type { ComponentType, ReactNode } from "react"
+import type { Component } from "vue"
 
-export type Link = ComponentType<{
+export type Link = Component<{
     href: string
     className?: string
-    children: ReactNode
 }>

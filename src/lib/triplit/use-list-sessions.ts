@@ -1,4 +1,5 @@
 import type { Session } from "better-auth"
+import { computed } from "vue"
 import type { AuthHooks } from "../../types/auth-hooks"
 import { getModelName } from "./model-names"
 import { useConditionalQuery } from "./use-conditional-query"
@@ -19,15 +20,13 @@ export function useListSessions({
 
     const { payload } = useTriplitToken(triplit)
 
-    const {
-        results: sessions,
-        error,
-        fetching
-    } = useConditionalQuery(triplit, payload?.sub && triplit.query(modelName))
+    const queryResult = useConditionalQuery(triplit, payload.value?.sub && triplit.query(modelName))
+
+    const sessions = computed(() => queryResult.value?.results as Session[] | undefined)
 
     return {
-        data: sessions as Session[] | undefined,
-        isPending: isPending || fetching,
-        error
+        get data() { return sessions.value },
+        get isPending() { return isPending || queryResult.value?.fetching },
+        get error() { return queryResult.value?.error }
     }
 }

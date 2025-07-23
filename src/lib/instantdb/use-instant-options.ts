@@ -1,6 +1,6 @@
-import type { InstantReactWebDatabase } from "@instantdb/react"
+import type { tx, TransactionChunk, id } from "@instantdb/core"
 import type { User } from "better-auth"
-import { useMemo } from "react"
+import { computed } from "vue"
 
 import type { Session } from "../../types/auth-client"
 import type { AuthHooks } from "../../types/auth-hooks"
@@ -18,9 +18,14 @@ type ModelNames = {
     [key in Namespace]: string
 }
 
+// InstantDB instance interface
+interface InstantDB {
+    tx: typeof tx
+    transact: (chunks: TransactionChunk<any, any>[]) => void
+}
+
 export interface UseInstantOptionsProps {
-    // biome-ignore lint/suspicious/noExplicitAny:
-    db: InstantReactWebDatabase<any>
+    db: InstantDB
     modelNames?: Partial<ModelNames>
     usePlural?: boolean
     sessionData?: { user: User; session: Session }
@@ -39,7 +44,7 @@ export function useInstantOptions({
 }: UseInstantOptionsProps) {
     const userId = user?.id || sessionData?.user.id
 
-    const hooks = useMemo(() => {
+    const hooks = computed(() => {
         return {
             useSession: () =>
                 useSession({
@@ -66,9 +71,9 @@ export function useInstantOptions({
                     isPending
                 })
         } as AuthHooks
-    }, [db, modelNames, usePlural, sessionData, isPending])
+    })
 
-    const mutators = useMemo(() => {
+    const mutators = computed(() => {
         return {
             updateUser: async (data) => {
                 if (!userId) {
@@ -82,17 +87,17 @@ export function useInstantOptions({
                 })
 
                 db.transact([
-                    db.tx[modelName][userId].update({
+                    db.tx[modelName][userId as string].update({
                         ...data,
                         updatedAt: Date.now()
                     })
                 ])
             }
         } as AuthMutators
-    }, [db, userId, modelNames, usePlural])
+    })
 
     return {
-        hooks,
-        mutators
+        hooks: hooks.value,
+        mutators: mutators.value
     }
 }

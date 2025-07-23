@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { computed } from "vue"
 
 import type { AuthHooks } from "../../types/auth-hooks"
 import { getModelName } from "./model-names"
@@ -20,21 +20,21 @@ export function useListAccounts({
 
     const { payload } = useTriplitToken(triplit)
 
-    const { results, error, fetching } = useConditionalQuery(
+    const queryResult = useConditionalQuery(
         triplit,
-        payload?.sub && triplit.query(modelName)
+        payload.value?.sub && triplit.query(modelName)
     )
 
-    const accounts = useMemo(() => {
-        return results?.map((account) => ({
+    const accounts = computed(() => {
+        return queryResult.value?.results?.map((account: any) => ({
             accountId: account.accountId as string,
             provider: account.providerId as string
-        }))
-    }, [results])
+        })) || []
+    })
 
     return {
-        data: accounts,
-        isPending: isPending || fetching,
-        error
+        get data() { return accounts.value },
+        get isPending() { return isPending || queryResult.value?.fetching },
+        get error() { return queryResult.value?.error }
     }
 }

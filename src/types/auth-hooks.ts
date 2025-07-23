@@ -12,21 +12,37 @@ type AuthHook<T> = {
     data?: T | null
     error?: BetterFetchError | null
     refetch?: Refetch
+    isRefetching?: boolean
 }
 
 export type AuthHooks = {
-    useSession: () => ReturnType<AnyAuthClient["useSession"]>
+    useSession: () => AuthHook<{
+        user: AnyAuthClient["$Infer"]["Session"]["user"]
+        session: AnyAuthClient["$Infer"]["Session"]["session"]
+    }>
     useListAccounts: () => AuthHook<{ accountId: string; provider: string }[]>
     useListDeviceSessions: () => AuthHook<AnyAuthClient["$Infer"]["Session"][]>
     useListSessions: () => AuthHook<AnyAuthSession["session"][]>
-    useListPasskeys: () => Partial<ReturnType<AuthClient["useListPasskeys"]>>
+    useListPasskeys: () => AuthHook<any[]>
     useListApiKeys: () => AuthHook<ApiKey[]>
-    useActiveOrganization: () => Partial<
-        ReturnType<AuthClient["useActiveOrganization"]>
-    >
-    useListOrganizations: () => Partial<
-        ReturnType<AuthClient["useListOrganizations"]>
-    >
+    useActiveOrganization: () => AuthHook<{
+        id: string
+        name: string
+        createdAt: Date
+        slug: string
+        metadata?: any
+        logo?: string | null
+        members?: any[]
+        invitations?: any[]
+    } | null>
+    useListOrganizations: () => AuthHook<{
+        id: string
+        name: string
+        createdAt: Date
+        slug: string
+        metadata?: any
+        logo?: string | null
+    }[]>
     useHasPermission: (
         params: Parameters<AuthClient["organization"]["hasPermission"]>[0]
     ) => AuthHook<{

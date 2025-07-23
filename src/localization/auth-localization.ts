@@ -709,6 +709,127 @@ export const authLocalization = {
 
     /** @default "The slug does not match" */
     SLUG_DOES_NOT_MATCH: "The slug does not match",
+
+    /** @default "Connected" */
+    CONNECTED: "Connected",
+
+    /** @default "No additional providers available" */
+    NO_PROVIDERS_AVAILABLE: "No additional providers available",
+
+    /** @default "Account unlinked successfully" */
+    ACCOUNT_UNLINKED: "Account unlinked successfully",
+
+    /** @default "Update Avatar" */
+    UPDATE_AVATAR: "Update Avatar",
+
+    /** @default "Click on the avatar to upload a custom one from your files." */
+    AVATAR_UPLOAD_INSTRUCTIONS: "Click on the avatar to upload a custom one from your files.",
+
+    /** @default "Recommended: Square, at least 400x400px" */
+    RECOMMENDED_SIZE: "Recommended: Square, at least 400x400px",
+
+    /** @default "Failed to upload image" */
+    FAILED_TO_UPLOAD_IMAGE: "Failed to upload image",
+
+    /** @default "Avatar updated successfully" */
+    AVATAR_UPDATED: "Avatar updated successfully",
+
+    /** @default "Update" */
+    UPDATE: "Update",
+
+    /** @default "Too short" */
+    TOO_SHORT: "Too short",
+
+    /** @default "Too long" */
+    TOO_LONG: "Too long",
+
+    /** @default "Invalid URL" */
+    INVALID_URL: "Invalid URL",
+
+    /** @default "Updated successfully" */
+    UPDATED: "Updated successfully",
+
+    /** @default "Update Name" */
+    UPDATE_NAME: "Update Name",
+
+    /** @default "Name is required" */
+    NAME_REQUIRED: "Name is required",
+
+    /** @default "Name is too long" */
+    NAME_TOO_LONG: "Name is too long",
+
+    /** @default "Name is invalid" */
+    NAME_INVALID: "Name is invalid",
+
+    /** @default "Name updated successfully" */
+    NAME_UPDATED: "Name updated successfully",
+
+    /** @default "Update Username" */
+    UPDATE_USERNAME: "Update Username",
+
+    /** @default "Username changes are disabled" */
+    USERNAME_DISABLED: "Username changes are disabled",
+
+    /** @default "Username is required" */
+    USERNAME_REQUIRED: "Username is required",
+
+    /** @default "Username is invalid" */
+    USERNAME_INVALID: "Username is invalid",
+
+    /** @default "Username is reserved" */
+    USERNAME_RESERVED: "Username is reserved",
+
+    /** @default "Username updated successfully" */
+    USERNAME_UPDATED: "Username updated successfully",
+
+    /** @default "No passkeys found" */
+    NO_PASSKEYS: "No passkeys found",
+
+    /** @default "Unnamed passkey" */
+    UNNAMED_PASSKEY: "Unnamed passkey",
+
+    /** @default "Added" */
+    ADDED: "Added",
+
+    /** @default "Add a passkey to sign in without a password." */
+    PASSKEY_INSTRUCTIONS: "Add a passkey to sign in without a password.",
+
+    /** @default "Platform authenticator" */
+    PLATFORM_AUTHENTICATOR: "Platform authenticator",
+
+    /** @default "Cross-platform authenticator" */
+    CROSS_PLATFORM_AUTHENTICATOR: "Cross-platform authenticator",
+
+    /** @default "Passkey deleted successfully" */
+    PASSKEY_DELETED: "Passkey deleted successfully",
+
+    /** @default "WebAuthn is not supported in this browser" */
+    WEBAUTHN_NOT_SUPPORTED: "WebAuthn is not supported in this browser",
+
+    /** @default "Passkey added successfully" */
+    PASSKEY_ADDED: "Passkey added successfully",
+
+    /** @default "Passkey registration cancelled" */
+    PASSKEY_REGISTRATION_CANCELLED: "Passkey registration cancelled",
+
+    /** @default "Two-factor authentication is enabled" */
+    TWO_FACTOR_ENABLED_STATUS: "Two-factor authentication is enabled",
+
+    /** @default "Backup Codes" */
+    BACKUP_CODES_TITLE: "Backup Codes",
+
+    /** @default "Save these codes in a secure place" */
+    BACKUP_CODES_INSTRUCTIONS: "Save these codes in a secure place",
+
+    /** @default "Copy Backup Codes" */
+    COPY_BACKUP_CODES: "Copy Backup Codes",
+
+    /** @default "Backup codes copied to clipboard" */
+    BACKUP_CODES_COPIED: "Backup codes copied to clipboard",
+
+    /** @default "Failed to copy to clipboard" */
+    FAILED_TO_COPY: "Failed to copy to clipboard",
+
     ...BASE_ERROR_CODES,
     ...ADMIN_ERROR_CODES,
     ...ANONYMOUS_ERROR_CODES,

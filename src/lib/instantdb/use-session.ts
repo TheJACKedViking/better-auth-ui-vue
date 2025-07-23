@@ -1,5 +1,5 @@
-import type { BetterFetchError } from "better-auth/react"
-import { useMemo } from "react"
+import type { BetterFetchError } from "@better-fetch/fetch"
+import { computed, ref, watchEffect } from "vue"
 import type { User } from "../../types/auth-client"
 import type { AuthHooks } from "../../types/auth-hooks"
 import { getModelName } from "./model-names"
@@ -13,43 +13,31 @@ export function useSession({
     usePlural,
     modelNames
 }: UseInstantOptionsProps): ReturnType<AuthHooks["useSession"]> {
-    const { user: authUser, error } = db.useAuth()
-
+    // Note: InstantDB doesn't have Vue bindings, so we'll need to handle this differently
+    // For now, we'll use the sessionData passed in
     const modelName = getModelName({
         namespace: "user",
         modelNames,
         usePlural
     })
 
-    const { data } = db.useQuery(
-        authUser
-            ? { [modelName]: { $: { where: { id: authUser?.id } } } }
-            : null
-    )
-
-    const user = useMemo(() => {
-        if (data?.[modelName]?.length) {
-            const user = data[modelName][0]
-            return {
-                ...user,
-                createdAt: new Date(user.createdAt as string),
-                updatedAt: new Date(user.updatedAt as string)
-            } as User
-        }
-        return null
-    }, [data, modelName])
+    const user = computed(() => {
+        // In a real implementation, you would need to integrate with InstantDB's
+        // subscription system to get reactive updates
+        return sessionData?.user || null
+    })
 
     return {
         data: sessionData
             ? {
                   session: sessionData.session,
-                  user: (sessionData?.user.id === user?.id
-                      ? user
+                  user: (sessionData?.user.id === user.value?.id
+                      ? user.value
                       : sessionData.user) as User
               }
             : null,
         isPending,
         refetch: refetch || (() => {}),
-        error: (error as BetterFetchError) || null
+        error: null
     }
 }

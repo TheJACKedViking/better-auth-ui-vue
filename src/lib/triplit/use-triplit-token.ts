@@ -1,26 +1,32 @@
 import type { TriplitClient } from "@triplit/client"
-import { useConnectionStatus } from "@triplit/react"
-import { useMemo } from "react"
+import { computed, ref, watchEffect } from "vue"
 
 export function useTriplitToken(triplit: TriplitClient) {
-    const connectionStatus = useConnectionStatus(triplit)
+    // Note: Triplit doesn't have Vue bindings for connection status
+    // We'll use the token directly
+    const token = ref(triplit.token)
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: update when connection status changes
-    const payload = useMemo(
-        () =>
-            triplit.token
-                ? (decodeJWT(triplit.token) as Record<string, unknown> & {
-                      exp: number
-                      iat: number
-                      sub?: string
-                      email?: string
-                      name?: string
-                  })
-                : undefined,
-        [connectionStatus]
+    // Watch for token changes
+    watchEffect(() => {
+        token.value = triplit.token
+    })
+
+    const payload = computed(() =>
+        token.value
+            ? (decodeJWT(token.value) as Record<string, unknown> & {
+                  exp: number
+                  iat: number
+                  sub?: string
+                  email?: string
+                  name?: string
+              })
+            : undefined
     )
 
-    return { token: payload && triplit.token, payload }
+    return { 
+        token: computed(() => payload.value && token.value), 
+        payload 
+    }
 }
 
 function decodeJWT(token: string) {

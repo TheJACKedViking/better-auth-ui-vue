@@ -1,6 +1,6 @@
 import type { TriplitClient } from "@triplit/client"
 import type { User } from "better-auth"
-import { useMemo } from "react"
+import { computed } from "vue"
 
 import type { Session } from "../../types/auth-client"
 import type { AuthHooks } from "../../types/auth-hooks"
@@ -33,7 +33,7 @@ export function useTriplitHooks({
     sessionData,
     isPending
 }: UseTriplitOptionsProps) {
-    const hooks = useMemo(() => {
+    const hooks = computed(() => {
         return {
             useSession: () =>
                 useSession({
@@ -60,9 +60,9 @@ export function useTriplitHooks({
                     isPending
                 })
         } as AuthHooks
-    }, [triplit, modelNames, usePlural, sessionData, isPending])
+    })
 
     return {
-        hooks
+        hooks: hooks.value
     }
 }

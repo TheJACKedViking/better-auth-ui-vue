@@ -25,6 +25,16 @@ export function errorCodeToCamelCase(errorCode: string): string {
 }
 
 /**
+ * Gets an error message from an error object
+ */
+export function getErrorMessage(error: any, localization?: any): string {
+    if (typeof error === 'string') return error
+    if (error?.message) return error.message
+    if (error?.error) return error.error
+    return 'An error occurred'
+}
+
+/**
  * Gets a localized error message from an error object
  */
 export function getLocalizedError({
@@ -103,4 +113,27 @@ export function getPasswordSchema(
         })
     }
     return schema
+}
+
+export function getCallbackURL({
+    baseURL,
+    basePath,
+    persistClient,
+    redirectTo,
+    callbackURL,
+    viewPaths
+}: {
+    baseURL?: string
+    basePath?: string
+    persistClient?: boolean
+    redirectTo?: string
+    callbackURL?: string
+    viewPaths?: AuthViewPaths
+}) {
+    return `${baseURL || ''}${
+        callbackURL ||
+        (persistClient && basePath && viewPaths?.CALLBACK
+            ? `${basePath}/${viewPaths.CALLBACK}?redirectTo=${redirectTo || '/'}`
+            : redirectTo || '/')
+    }`
 }

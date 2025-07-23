@@ -119,8 +119,12 @@ const OrganizationLogoForm = defineComponent({
         const loading = ref(false)
 
         const handleFileChange = async (event: Event) => {
-            const file = (event.target as HTMLInputElement).files?.[0]
+            const target = event.target as HTMLInputElement
+            const file = target.files?.[0]
             if (file) await handleLogoChange(file)
+            
+            // Clear the input value to allow selecting the same file again
+            target.value = ''
         }
 
         const handleLogoChange = async (file: File) => {
@@ -156,6 +160,7 @@ const OrganizationLogoForm = defineComponent({
 
             try {
                 await authClient.organization.update({
+                    organizationId: activeOrganization.id,
                     data: { logo: image },
                     fetchOptions: { throw: true }
                 })
@@ -179,6 +184,7 @@ const OrganizationLogoForm = defineComponent({
 
             try {
                 await authClient.organization.update({
+                    organizationId: activeOrganization.id,
                     data: { logo: '' },
                     fetchOptions: { throw: true }
                 })
@@ -195,7 +201,11 @@ const OrganizationLogoForm = defineComponent({
             loading.value = false
         }
 
-        const openFileDialog = () => fileInputRef.value?.click()
+        const openFileDialog = () => {
+            if (hasPermission?.success) {
+                fileInputRef.value?.click()
+            }
+        }
 
         return () => h(
             Card,
@@ -232,21 +242,24 @@ const OrganizationLogoForm = defineComponent({
                                     },
                                     () =>
                                         h(OrganizationLogo, {
+                                            key: activeOrganization?.logo || undefined,
                                             organization: activeOrganization,
-                                            size: 'xl',
+                                            isPending: isPending.value || loading.value,
                                             className: 'size-20 text-2xl',
                                             classNames: props.classNames?.avatar,
                                             localization: localization.value
                                         })
                                 )
                             ),
-                            h(DropdownMenuContent, {}, () => [
+                            h(DropdownMenuContent, {
+                                onCloseAutoFocus: (e: Event) => e.preventDefault()
+                            }, () => [
                                 h(
                                     DropdownMenuItem,
                                     { onClick: openFileDialog },
                                     () => [
                                         h(UploadCloudIcon, { class: props.classNames?.icon }),
-                                        localization.value.UPLOAD
+                                        localization.value.UPLOAD_LOGO
                                     ]
                                 ),
                                 activeOrganization?.logo &&
@@ -258,7 +271,7 @@ const OrganizationLogoForm = defineComponent({
                                         },
                                         () => [
                                             h(Trash2Icon, { class: props.classNames?.icon }),
-                                            localization.value.DELETE
+                                            localization.value.DELETE_LOGO
                                         ]
                                     )
                             ])

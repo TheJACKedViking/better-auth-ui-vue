@@ -37,7 +37,7 @@
                 />
                 <div v-else class="space-y-2">
                     <Input
-                        v-model="slug"
+                        v-bind="slugField"
                         :class="cn(classNames?.input, { 'border-destructive': errors.value?.slug })"
                         :placeholder="localization.ORGANIZATION_SLUG_PLACEHOLDER"
                         :disabled="isSubmitting || !hasPermission?.success"
@@ -123,7 +123,7 @@ const { defineField, handleSubmit, errors } = useForm({
     }
 })
 
-const [slug] = defineField('slug')
+const [slug, slugField] = defineField('slug')
 
 const isSubmitting = ref(false)
 
@@ -143,6 +143,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     try {
         await authClient.organization.update({
+            organizationId: activeOrganization.id,
             data: { slug: values.slug },
             fetchOptions: {
                 throw: true

@@ -37,7 +37,7 @@
                 />
                 <div v-else class="space-y-2">
                     <Input
-                        v-model="name"
+                        v-bind="nameField"
                         :class="cn(classNames?.input, { 'border-destructive': errors.value?.name })"
                         :placeholder="localization.ORGANIZATION_NAME_PLACEHOLDER"
                         :disabled="isSubmitting || !hasPermission?.success"
@@ -118,7 +118,7 @@ const { defineField, handleSubmit, errors } = useForm({
     }
 })
 
-const [name] = defineField('name')
+const [name, nameField] = defineField('name')
 
 const isSubmitting = ref(false)
 
@@ -138,6 +138,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     try {
         await authClient.organization.update({
+            organizationId: activeOrganization.id,
             data: { name: values.name },
             fetchOptions: {
                 throw: true
